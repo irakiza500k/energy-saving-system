@@ -1,224 +1,108 @@
 const db = require("../utils/db");
-
 const bcrypt = require("bcryptjs");
-
 const jwt = require("jsonwebtoken");
 
+/* REGISTER */
 
-/* =========================
-   REGISTER
-========================= */
+const register = async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
 
-exports.register = async (req,res)=>{
+    const [existingUser] = await db.query(
+      "SELECT * FROM users WHERE email = ?",
+      [email]
+    );
 
-try{
+    if (existingUser.length > 0) {
+      return res.status(400).json({
+        message: "Email already exists",
+      });
+    }
 
-const {
-name,
-email,
-password
-}=req.body;
+    const hashedPassword =
+      await bcrypt.hash(password, 10);
 
-if(
-!name ||
-!email ||
-!password
-){
+    await db.query(
+      `
+      INSERT INTO users (name, email, password, role)
+      VALUES (?, ?, ?, ?)
+      `,
+      [name, email, hashedPassword, "user"]
+    );
 
-return res.status(400).json({
-message:"All fields required"
-});
+    res.json({
+      message: "User registered successfully",
+    });
+  } catch (error) {
+    console.log(error);
 
-}
-
-/* CHECK USER */
-
-db.query(
-
-"SELECT * FROM users WHERE email=?",
-
-[email],
-
-async(err,results)=>{
-
-if(err){
-
-console.log(err);
-
-return res.status(500).json({
-message:"Database error"
-});
-
-}
-
-if(results.length>0){
-
-return res.status(400).json({
-message:"Email already exists"
-});
-
-}
-
-/* HASH PASSWORD */
-
-const hashedPassword =
-await bcrypt.hash(password,10);
-
-/* INSERT USER */
-
-db.query(
-
-"INSERT INTO users(name,email,password,role) VALUES(?,?,?,?)",
-
-[
-name,
-email,
-hashedPassword,
-"user"
-],
-
-(err,result)=>{
-
-if(err){
-
-console.log(err);
-
-return res.status(500).json({
-message:"Registration failed"
-});
-
-}
-
-res.status(201).json({
-
-success:true,
-
-message:"User registered successfully"
-
-});
-
-}
-
-);
-
-}
-
-);
-
-}catch(error){
-
-console.log(error);
-
-res.status(500).json({
-message:"Server error"
-});
-
-}
-
+    res.status(500).json({
+      message: "Server error",
+    });
+  }
 };
 
+/* LOGIN */
 
+const login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
 
-/* =========================
-   LOGIN
-========================= */
+    const [users] = await db.query(
+      "SELECT * FROM users WHERE email = ?",
+      [email]
+    );
 
-exports.login = (req,res)=>{
+    if (users.length === 0) {
+      return res.status(401).json({
+        message: "Invalid email or password",
+      });
+    }
 
-const {
-email,
-password
-}=req.body;
+    const user = users[0];
 
-if(
-!email ||
-!password
-){
+    const validPassword =
+      await bcrypt.compare(
+        password,
+        user.password
+      );
 
-return res.status(400).json({
-message:"All fields required"
-});
+    if (!validPassword) {
+      return res.status(401).json({
+        message: "Invalid email or password",
+      });
+    }
 
-}
+    const token = jwt.sign(
+      {
+        id: user.id,
+        role: user.role,
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "7d",
+      }
+    );
 
-db.query(
+    res.json({
+      token,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+    });
+  } catch (error) {
+    console.log(error);
 
-"SELECT * FROM users WHERE email=?",
+    res.status(500).json({
+      message: "Server error",
+    });
+  }
+};
 
-[email],
-
-async(err,results)=>{
-
-if(err){
-
-console.log(err);
-
-return res.status(500).json({
-message:"Database error"
-});
-
-}
-
-if(results.length===0){
-
-return res.status(401).json({
-message:"User not found"
-});
-
-}
-
-const user = results[0];
-
-const match =
-await bcrypt.compare(
-password,
-user.password
-);
-
-if(!match){
-
-return res.status(401).json({
-message:"Incorrect password"
-});
-
-}
-
-/* JWT TOKEN */
-
-const token = jwt.sign(
-
-{
-id:user.id,
-role:user.role
-},
-
-process.env.JWT_SECRET,
-
-{
-expiresIn:"7d"
-}
-
-);
-
-res.json({
-
-success:true,
-
-message:"Login successful",
-
-token,
-
-user:{
-id:user.id,
-name:user.name,
-email:user.email,
-role:user.role
-}
-
-});
-
-}
-
-);
-
+module.exports = {
+  register,
+  login,
 };

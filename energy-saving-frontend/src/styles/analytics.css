@@ -1,0 +1,20 @@
+.analytics-page {
+  min-height: 100vh;
+  padding: 30px;
+  background: #07111f;
+  color: white;
+}
+
+.analytics-title {
+  font-size: 32px;
+  margin-bottom: 30px;
+}
+
+.chart-wrapper {
+  width: 100%;
+  max-width: 1000px;
+  height: 450px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 20px;
+  padding: 20px;
+}

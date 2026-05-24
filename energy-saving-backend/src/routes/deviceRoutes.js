@@ -2,36 +2,41 @@ const express = require("express");
 
 const router = express.Router();
 
-const authMiddleware = require("../middleware/authMiddleware");
+const authMiddleware = require(
+  "../middleware/authMiddleware"
+);
 
-const deviceController = require("../controllers/deviceController");
+const {
+  getDevices,
+  addDevice,
+  toggleDevice,
+  deleteDevice,
+} = require(
+  "../controllers/deviceController"
+);
 
-/* GET DEVICES */
 router.get(
   "/",
   authMiddleware,
-  deviceController.getDevices
+  getDevices
 );
 
-/* ADD DEVICE */
 router.post(
   "/",
   authMiddleware,
-  deviceController.addDevice
+  addDevice
 );
 
-/* TOGGLE DEVICE */
 router.put(
   "/:id",
   authMiddleware,
-  deviceController.toggleDevice
+  toggleDevice
 );
 
-/* DELETE DEVICE */
 router.delete(
   "/:id",
   authMiddleware,
-  deviceController.deleteDevice
+  deleteDevice
 );
 
 module.exports = router;

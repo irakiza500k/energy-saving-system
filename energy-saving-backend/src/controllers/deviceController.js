@@ -2,7 +2,10 @@ const db = require("../utils/db");
 
 /* GET DEVICES */
 
-const getDevices = async (req, res) => {
+const getDevices = async (
+  req,
+  res
+) => {
   try {
     const [devices] = await db.query(
       "SELECT * FROM devices WHERE user_id = ?",
@@ -21,9 +24,13 @@ const getDevices = async (req, res) => {
 
 /* ADD DEVICE */
 
-const addDevice = async (req, res) => {
+const addDevice = async (
+  req,
+  res
+) => {
   try {
-    const { name, power } = req.body;
+    const { name, power } =
+      req.body;
 
     await db.query(
       `
@@ -31,11 +38,17 @@ const addDevice = async (req, res) => {
       (user_id, name, power, status)
       VALUES (?, ?, ?, ?)
       `,
-      [req.user.id, name, power, "OFF"]
+      [
+        req.user.id,
+        name,
+        power,
+        "OFF",
+      ]
     );
 
     res.json({
-      message: "Device added",
+      message:
+        "Device added successfully",
     });
   } catch (error) {
     console.log(error);
@@ -48,7 +61,10 @@ const addDevice = async (req, res) => {
 
 /* TOGGLE DEVICE */
 
-const toggleDevice = async (req, res) => {
+const toggleDevice = async (
+  req,
+  res
+) => {
   try {
     const { id } = req.params;
 
@@ -63,7 +79,8 @@ const toggleDevice = async (req, res) => {
       });
     }
 
-    const currentStatus = devices[0].status;
+    const currentStatus =
+      devices[0].status;
 
     const newStatus =
       currentStatus === "ON"
@@ -76,7 +93,8 @@ const toggleDevice = async (req, res) => {
     );
 
     res.json({
-      message: "Device updated",
+      message:
+        "Device updated successfully",
     });
   } catch (error) {
     console.log(error);
@@ -89,7 +107,10 @@ const toggleDevice = async (req, res) => {
 
 /* DELETE DEVICE */
 
-const deleteDevice = async (req, res) => {
+const deleteDevice = async (
+  req,
+  res
+) => {
   try {
     const { id } = req.params;
 
@@ -99,7 +120,8 @@ const deleteDevice = async (req, res) => {
     );
 
     res.json({
-      message: "Device deleted",
+      message:
+        "Device deleted successfully",
     });
   } catch (error) {
     console.log(error);

@@ -1,69 +1,39 @@
 const db = require("../utils/db");
 
-exports.getAlerts = (req,res)=>{
+const getAlerts = async (
+  req,
+  res
+) => {
+  try {
+    const [devices] = await db.query(
+      "SELECT * FROM devices WHERE user_id = ?",
+      [req.user.id]
+    );
 
-const userId=req.user.id;
+    const alerts = [];
 
-const sql=
-"SELECT * FROM devices WHERE user_id=?";
+    devices.forEach((device) => {
+      if (
+        device.status === "ON" &&
+        device.power > 1000
+      ) {
+        alerts.push({
+          id: device.id,
+          message: `${device.name} is consuming high power`,
+        });
+      }
+    });
 
-db.query(sql,[userId],(err,devices)=>{
+    res.json(alerts);
+  } catch (error) {
+    console.log(error);
 
-if(err){
-return res.status(500).json(err);
-}
+    res.status(500).json({
+      message: "Server error",
+    });
+  }
+};
 
-const alerts=[];
-
-let totalDaily=0;
-
-devices.forEach(device=>{
-
-const kwh=
-(device.wattage*device.hours_per_day)/1000;
-
-totalDaily+=kwh;
-
-if(device.wattage>1000){
-
-alerts.push({
-type:"warning",
-message:
-`${device.name} uses unusually high power`
-});
-
-}
-
-if(
-device.status==="ON" &&
-device.hours_per_day>10
-){
-
-alerts.push({
-type:"danger",
-message:
-`${device.name} stayed ON for long periods`
-});
-
-}
-
-});
-
-if(totalDaily>15){
-
-alerts.push({
-
-type:"danger",
-
-message:
-"Daily usage exceeded 15kWh"
-
-});
-
-}
-
-res.json(alerts);
-
-});
-
+module.exports = {
+  getAlerts,
 };

@@ -1,35 +1,29 @@
-const mysql = require("mysql2");
-
-const db = mysql.createConnection({
-
-host:"localhost",
-
-user:"root",
-
-password:"",
-
-database:"ENERGY_SAVING_SYSTEM"
-
-});
-
-db.connect((err)=>{
-
-if(err){
-
-console.log(
-"❌ MySQL Connection Error"
+const mysql = require(
+  "mysql2/promise"
 );
 
-console.log(err);
+require("dotenv").config();
 
-}else{
-
-console.log(
-"✅ MySQL Connected"
-);
-
-}
-
+const pool = mysql.createPool({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password:
+    process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
 });
 
-module.exports = db;
+pool
+  .getConnection()
+  .then(() => {
+    console.log(
+      "✅ MySQL Connected"
+    );
+  })
+  .catch((err) => {
+    console.log(
+      "❌ Database Error:",
+      err.message
+    );
+  });
+
+module.exports = pool;

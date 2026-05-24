@@ -8,57 +8,43 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
+import "../styles/analytics.css";
+
 const data = [
-  { day: "Mon", usage: 12 },
-  { day: "Tue", usage: 18 },
-  { day: "Wed", usage: 9 },
-  { day: "Thu", usage: 14 },
-  { day: "Fri", usage: 22 },
-  { day: "Sat", usage: 11 },
-  { day: "Sun", usage: 16 },
+  { name: "Mon", power: 120 },
+  { name: "Tue", power: 300 },
+  { name: "Wed", power: 220 },
+  { name: "Thu", power: 410 },
+  { name: "Fri", power: 280 },
+  { name: "Sat", power: 350 },
+  { name: "Sun", power: 200 },
 ];
 
-export default function Analytics() {
+function Analytics() {
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        background: "#020617",
-        color: "white",
-        padding: "40px",
-      }}
-    >
-      <h1
-        style={{
-          marginBottom: "30px",
-        }}
-      >
+    <div className="analytics-page">
+      <h1 className="analytics-title">
         Energy Analytics
       </h1>
 
-      <div
-        style={{
-          width: "100%",
-          height: "450px",
-          background: "#0f172a",
-          borderRadius: "20px",
-          padding: "20px",
-        }}
-      >
-        <ResponsiveContainer width="100%" height="100%">
+      <div className="chart-wrapper">
+        <ResponsiveContainer
+          width="100%"
+          height={400}
+        >
           <LineChart data={data}>
-            <CartesianGrid stroke="#1e293b" />
+            <CartesianGrid strokeDasharray="3 3" />
 
-            <XAxis dataKey="day" stroke="#94a3b8" />
+            <XAxis dataKey="name" />
 
-            <YAxis stroke="#94a3b8" />
+            <YAxis />
 
             <Tooltip />
 
             <Line
               type="monotone"
-              dataKey="usage"
-              stroke="#00ffe0"
+              dataKey="power"
+              stroke="#00ff99"
               strokeWidth={4}
             />
           </LineChart>
@@ -67,3 +53,5 @@ export default function Analytics() {
     </div>
   );
 }
+
+export default Analytics;
