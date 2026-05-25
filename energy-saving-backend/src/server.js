@@ -1,6 +1,40 @@
-require("dotenv").config();
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
 
-const app = require("./app");
+import db from "./config/db.js";
+import authRoutes from "./routes/authRoutes.js";
+
+dotenv.config();
+
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+
+/*
+===================================
+ROUTES
+===================================
+*/
+
+app.use("/api/auth", authRoutes);
+
+/*
+===================================
+HOME ROUTE
+===================================
+*/
+
+app.get("/", (req, res) => {
+  res.send("⚡ Energy Saving Backend Running");
+});
+
+/*
+===================================
+SERVER
+===================================
+*/
 
 const PORT = process.env.PORT || 5002;
 

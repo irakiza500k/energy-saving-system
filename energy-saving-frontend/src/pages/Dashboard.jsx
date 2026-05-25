@@ -1,47 +1,67 @@
-import { Link } from "react-router-dom";
+import "../styles/dashboard.css";
 
-export default function Dashboard() {
-  const user =
-    JSON.parse(localStorage.getItem("user")) || {};
+function Dashboard() {
+
+  const user = JSON.parse(localStorage.getItem("user"));
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        background: "#020617",
-        color: "white",
-        padding: "40px",
-      }}
-    >
-      <h1>
-        Welcome, {user.name}
-      </h1>
 
-      <p
-        style={{
-          marginTop: "20px",
-          color: "#94a3b8",
-        }}
-      >
-        You have no devices yet.
-      </p>
+    <div className="dashboard">
 
-      <Link to="/devices">
-        <button
-          style={{
-            marginTop: "30px",
-            width: "220px",
-            height: "60px",
-            border: "none",
-            borderRadius: "12px",
-            background: "#00ffe0",
-            fontWeight: "bold",
-            cursor: "pointer",
-          }}
-        >
-          Add First Device
-        </button>
-      </Link>
+      <aside className="sidebar">
+
+        <h2>⚡ EnergySys</h2>
+
+        <ul>
+
+          <li>Dashboard</li>
+          <li>Analytics</li>
+          <li>Devices</li>
+          <li>Alerts</li>
+          <li>Settings</li>
+
+        </ul>
+
+      </aside>
+
+      <main className="main-content">
+
+        <div className="topbar">
+
+          <h1>
+            Welcome {user?.name || "User"}
+          </h1>
+
+        </div>
+
+        <div className="cards">
+
+          <div className="card">
+            <h3>Total Energy</h3>
+            <p>450 kWh</p>
+          </div>
+
+          <div className="card">
+            <h3>Money Saved</h3>
+            <p>$120</p>
+          </div>
+
+          <div className="card">
+            <h3>Active Devices</h3>
+            <p>12</p>
+          </div>
+
+          <div className="card">
+            <h3>System Status</h3>
+            <p>Optimal</p>
+          </div>
+
+        </div>
+
+      </main>
+
     </div>
   );
 }
+
+export default Dashboard;

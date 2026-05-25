@@ -1,80 +1,95 @@
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate, Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../styles/auth.css";
 
-export default function Register() {
+function Register() {
+
   const navigate = useNavigate();
 
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    password: "",
+  const [formData,setFormData] = useState({
+    name:"",
+    email:"",
+    password:""
   });
 
-  const handleChange = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
+  const handleChange=(e)=>{
+    setFormData({
+      ...formData,
+      [e.target.name]:e.target.value
     });
   };
 
-  const registerUser = async (e) => {
+  const handleSubmit = async(e)=>{
     e.preventDefault();
 
-    try {
+    try{
+
       await axios.post(
         "http://localhost:5002/api/auth/register",
-        form
+        formData
       );
 
-      alert("Registration successful");
+      alert("Registered successfully");
 
       navigate("/login");
-    } catch (err) {
-      console.log(err);
-      alert("Registration failed");
+
+    }catch(err){
+      alert(err.response?.data?.message || "Registration failed");
     }
   };
 
   return (
-    <div className="auth-page">
-      <form className="auth-form" onSubmit={registerUser}>
-        <h2>Create Account</h2>
+    <div className="auth-container">
 
-        <input
-          type="text"
-          name="name"
-          placeholder="Full Name"
-          onChange={handleChange}
-          required
-        />
+      <div className="auth-card">
 
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          onChange={handleChange}
-          required
-        />
-
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          onChange={handleChange}
-          required
-        />
-
-        <button type="submit">
+        <h1 className="auth-title">
           Register
-        </button>
+        </h1>
 
-        <p>
-          Already have an account?
-          <Link to="/login"> Login</Link>
-        </p>
-      </form>
+        <form onSubmit={handleSubmit}>
+
+          <input
+            type="text"
+            name="name"
+            placeholder="Full Name"
+            className="auth-input"
+            onChange={handleChange}
+          />
+
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            className="auth-input"
+            onChange={handleChange}
+          />
+
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            className="auth-input"
+            onChange={handleChange}
+          />
+
+          <button className="auth-btn">
+            Register
+          </button>
+
+        </form>
+
+        <div className="auth-link">
+          <Link to="/login">
+            Already have account?
+          </Link>
+        </div>
+
+      </div>
+
     </div>
   );
 }
+
+export default Register;

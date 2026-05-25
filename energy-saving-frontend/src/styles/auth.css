@@ -1,157 +1,68 @@
-body{
-margin:0;
-padding:0;
-font-family:Arial,sans-serif;
-background:#020617;
-color:white;
-}
-
-/* =========================
-   CONTAINER
-========================= */
-
 .auth-container{
-
-height:100vh;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-padding:20px;
-
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:
+  linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)),
+  url("../assets/energy-bg.jpg");
+  background-size:cover;
+  background-position:center;
 }
-
-/* =========================
-   CARD
-========================= */
 
 .auth-card{
-
-width:420px;
-
-background:rgba(255,255,255,0.05);
-
-backdrop-filter:blur(15px);
-
-border:1px solid rgba(255,255,255,0.1);
-
-padding:40px;
-
-border-radius:20px;
-
-box-shadow:
-0 0 40px rgba(20,241,217,0.2);
-
+  width:400px;
+  background:#121212;
+  border:2px solid #ffd000;
+  padding:40px;
+  border-radius:20px;
+  box-shadow:0 0 30px rgba(255,208,0,0.4);
 }
 
-.auth-card h1{
-
-text-align:center;
-
-margin-bottom:30px;
-
-color:#14f1d9;
-
+.auth-title{
+  text-align:center;
+  margin-bottom:25px;
+  color:#ffd000;
+  font-size:32px;
 }
 
-/* =========================
-   FORM
-========================= */
-
-.auth-card form{
-
-display:flex;
-
-flex-direction:column;
-
-gap:20px;
-
+.auth-input{
+  width:100%;
+  padding:15px;
+  margin-bottom:15px;
+  border:none;
+  border-radius:10px;
+  background:#1e1e1e;
+  color:white;
+  font-size:16px;
 }
 
-.auth-card input{
-
-height:55px;
-
-border:none;
-
-outline:none;
-
-padding:0 15px;
-
-border-radius:12px;
-
-background:rgba(255,255,255,0.08);
-
-color:white;
-
-font-size:16px;
-
+.auth-input:focus{
+  outline:2px solid #ffd000;
 }
 
-.auth-card input::placeholder{
-
-color:#cbd5e1;
-
+.auth-btn{
+  width:100%;
+  padding:15px;
+  background:#ffd000;
+  border:none;
+  border-radius:10px;
+  font-size:18px;
+  font-weight:bold;
+  color:black;
+  transition:0.3s;
 }
 
-/* =========================
-   BUTTON
-========================= */
-
-.auth-card button{
-
-height:55px;
-
-border:none;
-
-border-radius:12px;
-
-background:#14f1d9;
-
-font-size:18px;
-
-font-weight:bold;
-
-cursor:pointer;
-
-transition:0.3s;
-
+.auth-btn:hover{
+  background:#ffea70;
+  transform:scale(1.03);
 }
 
-.auth-card button:hover{
-
-transform:translateY(-3px);
-
-box-shadow:
-0 0 20px #14f1d9;
-
+.auth-link{
+  text-align:center;
+  margin-top:20px;
 }
 
-/* =========================
-   LINKS
-========================= */
-
-.auth-card p{
-
-text-align:center;
-
-margin-top:20px;
-
-color:#d1d5db;
-
-}
-
-.auth-card a{
-
-color:#14f1d9;
-
-text-decoration:none;
-
-font-weight:bold;
-
-margin-left:5px;
-
+.auth-link a{
+  color:#ffd000;
 }

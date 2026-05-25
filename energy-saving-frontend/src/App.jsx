@@ -1,121 +1,31 @@
-import {
-BrowserRouter,
-Routes,
-Route
-} from "react-router-dom";
-
-/* PUBLIC */
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-
-/* USER */
-
 import Dashboard from "./pages/Dashboard";
-import Devices from "./pages/Devices";
-import Analytics from "./pages/Analytics";
-import Alerts from "./pages/Alerts";
-import Recommendations from "./pages/Recommendations";
 
-/* ADMIN */
+function App() {
 
-import AdminDashboard from "./pages/admin/AdminDashboard";
+  return (
 
-/* ROUTE GUARDS */
+    <BrowserRouter>
 
-import ProtectedRoute from "./utils/ProtectedRoute";
-import AdminRoute from "./utils/AdminRoute";
+      <Routes>
 
-function App(){
+        <Route path="/" element={<Landing />} />
 
-return(
+        <Route path="/login" element={<Login />} />
 
-<BrowserRouter>
+        <Route path="/register" element={<Register />} />
 
-<Routes>
+        <Route path="/dashboard" element={<Dashboard />} />
 
-{/* PUBLIC */}
+      </Routes>
 
-<Route
-path="/"
-element={<Landing />}
-/>
+    </BrowserRouter>
 
-<Route
-path="/login"
-element={<Login />}
-/>
-
-<Route
-path="/register"
-element={<Register />}
-/>
-
-{/* USER */}
-
-<Route
-path="/dashboard"
-element={
-<ProtectedRoute>
-<Dashboard />
-</ProtectedRoute>
-}
-/>
-
-<Route
-path="/devices"
-element={
-<ProtectedRoute>
-<Devices />
-</ProtectedRoute>
-}
-/>
-
-<Route
-path="/analytics"
-element={
-<ProtectedRoute>
-<Analytics />
-</ProtectedRoute>
-}
-/>
-
-<Route
-path="/alerts"
-element={
-<ProtectedRoute>
-<Alerts />
-</ProtectedRoute>
-}
-/>
-
-<Route
-path="/recommendations"
-element={
-<ProtectedRoute>
-<Recommendations />
-</ProtectedRoute>
-}
-/>
-
-{/* ADMIN */}
-
-<Route
-path="/admin"
-element={
-<AdminRoute>
-<AdminDashboard />
-</AdminRoute>
-}
-/>
-
-</Routes>
-
-</BrowserRouter>
-
-);
-
+  );
 }
 
 export default App;
